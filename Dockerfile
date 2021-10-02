@@ -1,17 +1,18 @@
-FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a as base
 
-# Create app directory
 WORKDIR /usr/src/app
+EXPOSE 3000
 
-# For production open comment and remove volume to app src on docker-compose
-#COPY package*.json ./
+FROM base as dev
 
-#RUN npm install
-# If you are building your code for production
-#RUN npm ci --only=production
+RUN npm install
+CMD ["npm", "run", "dev"]
 
-# For production open comment and remove volume to app src on docker-composer
-#COPY . .
+FROM base as production
 
-#EXPOSE 3000
-#CMD [ "node", "server.js" ]
+ENV NODE_ENV production
+COPY --chown=node:node package*.json ./
+RUN npm ci --only=production
+COPY --chown=node:node . .
+USER node
+CMD ["npm", "start"]

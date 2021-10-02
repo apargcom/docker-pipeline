@@ -1,19 +1,15 @@
 version: '3'
 services:
   server:
-    build: 
-      context: ./
+    extends:
+      file: docker-compose.extend.yml
+      service: ${APP_ENV}-server
     container_name: '${APP_NAME}-server'
-    command: /bin/sh -c "npm install && npm run ${APP_ENV}"
     restart: 'always'
     ports:
-      - "3000:3000"  
-    #working_dir: /usr/src/app    
+      - "3000:3000"    
     networks:
       - main
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules      
     restart: 'always'
 networks:
   main:
