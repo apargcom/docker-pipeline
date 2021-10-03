@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 services:
   server:
     extends:
@@ -6,8 +6,6 @@ services:
       service: ${APP_ENV}-server
     build:
       context: .
-      args:
-        APP_PORT: ${APP_PORT}
     container_name: '${APP_NAME}-server'
     restart: 'always'
     ports:
@@ -15,10 +13,8 @@ services:
     networks:
       - main
     restart: 'always'
-    environment:
-      APP_NAME: ${APP_NAME}
-      APP_PORT: ${APP_PORT}
-      APP_ENV: ${APP_ENV}
+    env_file:
+      - .env
 networks:
   main:
       name: '${APP_NAME}-network'
