@@ -1,11 +1,9 @@
 services:
   dev-server:
     build:
-      context: .
       target: dev
     volumes:
         - ./:/usr/src/app 
-  production-server:
+  prod-server:
     build:
-      context: .
-      target: production
+      target: prod

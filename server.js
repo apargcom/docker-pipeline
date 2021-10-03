@@ -2,15 +2,13 @@
 
 const express = require('express');
 
-// Constants
-const PORT = 3000;
-//const HOST = '0.0.0.0';
+const PORT = process.env.APP_PORT;
 
 // App
 const app = express();
 app.get('/', (req, res) => {
     res.send(`
-        <h1>Hello world!</h1>
+        <h1>Hello world from '${process.env.APP_NAME}' app!</h1>
     `);
 });
 

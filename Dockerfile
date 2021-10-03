@@ -1,14 +1,10 @@
-FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a as base
+FROM node:lts-alpine@sha256:1fdf68e175b39915e740da73269970b0a0a881c497865bc7b5accb9bd83a7811 AS base
 
 WORKDIR /usr/src/app
-EXPOSE 3000
+ARG APP_PORT
+EXPOSE $APP_PORT
 
-FROM base as dev
-
-RUN npm install
-CMD ["npm", "run", "dev"]
-
-FROM base as production
+FROM base AS prod
 
 ENV NODE_ENV production
 COPY --chown=node:node package*.json ./
@@ -16,3 +12,9 @@ RUN npm ci --only=production
 COPY --chown=node:node . .
 USER node
 CMD ["npm", "start"]
+
+FROM base AS dev
+
+ENV NODE_ENV development
+RUN npm install
+CMD ["npm", "run", "dev"]
