@@ -2,10 +2,10 @@ version: '3'
 services:
   server:
     extends:
-      file: docker-compose.services.yml
+      file: ./docker/docker-compose.services.yml
       service: ${APP_ENV}-server
     build:
-      context: .
+      context: .     
     container_name: '${APP_NAME}-server'
     restart: 'always'
     ports:

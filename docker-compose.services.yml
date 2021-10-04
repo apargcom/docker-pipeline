@@ -1,9 +1,0 @@
-services:
-  dev-server:
-    build:
-      target: dev
-    volumes:
-        - ./:/usr/src/app 
-  prod-server:
-    build:
-      target: prod
