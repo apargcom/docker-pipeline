@@ -1,8 +1,8 @@
-version: '3'
+version: '3.8'
 services:
   server:
     extends:
-      file: ./docker/docker-compose.services.yml
+      file: ./docker-compose.services.yml
       service: ${APP_ENV}-server
     build:
       context: .     

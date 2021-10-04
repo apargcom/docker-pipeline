@@ -1,9 +1,0 @@
-services:
-  dev-server:
-    build:
-      dockerfile: ./docker/Dockerfile
-    volumes:
-        - ../:/usr/src/app
-  prod-server:
-    build:
-      dockerfile: ./docker/Dockerfile.prod
