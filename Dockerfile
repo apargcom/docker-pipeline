@@ -9,11 +9,9 @@ COPY --chown=node:node package*.json ./
 RUN npm ci --only=production
 COPY --chown=node:node . .
 USER node
-CMD ["npm", "start"]
+CMD npm start
 
 FROM base AS dev
 
 ENV NODE_ENV development
-RUN npm install
-USER node
-CMD ["npm", "run", "dev"]
+CMD npm install && npm run dev
