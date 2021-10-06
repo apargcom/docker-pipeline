@@ -6,7 +6,6 @@ services:
     build:
       context: .     
     container_name: '${APP_NAME}-server'
-    restart: 'always'
     ports:
       - "${APP_PORT}:${APP_PORT}"    
     networks:
