@@ -1,7 +1,8 @@
 .dockerignore
-node_modules
-npm-debug.log
-Dockerfile
+app/node_modules
+app/npm-debug.log
+app/Dockerfile
+nginx/Dockerfile
 docker-compose.*.yml
 .git
 .gitignore

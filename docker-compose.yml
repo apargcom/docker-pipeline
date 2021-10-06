@@ -1,17 +1,63 @@
 services:
-  server:
+  nginx:
+    container_name: '${APP_NAME}-server'
+    build:
+       context: ./nginx   
+    ports:
+      - "${APP_PORT}:${APP_PORT}"   
+    networks:
+       - main
+    restart: 'always'
+    depends_on:
+      - app1
+      - app2
+      - app3
+  app1:
     extends:
       file: ./docker-compose.services.yml
-      service: ${APP_ENV}-server
+      service: ${APP_ENV}-app
     build:
-      context: .     
-    container_name: '${APP_NAME}-server'
-    restart: 'always'
+      context: ./app   
+    container_name: '${APP_NAME}-app'
     ports:
-      - "${APP_PORT}:${APP_PORT}"    
+      - "3001:3001"       
     networks:
       - main
     restart: 'always'
+    environment:
+      APP_PORT: 3001
+    env_file:
+      - .env
+  app2:
+    extends:
+      file: ./docker-compose.services.yml
+      service: ${APP_ENV}-app
+    build:
+      context: ./app   
+    container_name: '${APP_NAME}-app'
+    ports:
+      - "3002:3002"    
+    networks:
+      - main
+    restart: 'always'
+    environment:
+      APP_PORT: 3002
+    env_file:
+      - .env
+  app3:
+    extends:
+      file: ./docker-compose.services.yml
+      service: ${APP_ENV}-app
+    build:
+      context: ./app   
+    container_name: '${APP_NAME}-app'
+    ports:
+      - "3003:3003"    
+    networks:
+      - main
+    restart: 'always'
+    environment:
+      APP_PORT: 3003
     env_file:
       - .env
 networks:
