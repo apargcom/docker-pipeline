@@ -18,7 +18,7 @@ services:
       service: ${APP_ENV}-app
     build:
       context: ./app   
-    container_name: '${APP_NAME}-app'
+    container_name: '${APP_NAME}-app1'
     ports:
       - "3001:3001"       
     networks:
@@ -34,7 +34,7 @@ services:
       service: ${APP_ENV}-app
     build:
       context: ./app   
-    container_name: '${APP_NAME}-app'
+    container_name: '${APP_NAME}-app2'
     ports:
       - "3002:3002"    
     networks:
@@ -50,7 +50,7 @@ services:
       service: ${APP_ENV}-app
     build:
       context: ./app   
-    container_name: '${APP_NAME}-app'
+    container_name: '${APP_NAME}-app3'
     ports:
       - "3003:3003"    
     networks:
