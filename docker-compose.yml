@@ -1,5 +1,5 @@
 services:
-  nginx:
+  server:
     container_name: '${APP_NAME}-server'
     extends:
       file: ./docker-compose.services.yml
@@ -9,46 +9,53 @@ services:
     ports:
       - "${APP_PORT}:${APP_PORT}"   
     depends_on:
-      - app1
+      - app
       - app2
       - app3
-  app1:
-    container_name: '${APP_NAME}-app1'
+  app:
+    container_name: '${APP_NAME}-app'
     extends:
       file: ./docker-compose.services.yml
       service: general
       service: ${APP_ENV}-app  
     build:
       context: ./app           
+    image: ${APP_NAME}_app
     ports:
-      - "3001:3001"       
+      - "3000:3000"       
     environment:
-      APP_PORT: 3001
+      APP_PORT: 3000
+    healthcheck:
+      test: "exit 0"
   app2:
     container_name: '${APP_NAME}-app2'
     extends:
       file: ./docker-compose.services.yml
       service: general
-      service: ${APP_ENV}-app
-    build:
-      context: ./app           
+      service: ${APP_ENV}-app-clone
+    image: ${APP_NAME}_app       
     ports:
-      - "3002:3002"       
+      - "3001:3001"       
     environment:
-      APP_PORT: 3002
+      APP_PORT: 3001
+    depends_on:
+      app:
+        condition: service_healthy
   app3:
     container_name: '${APP_NAME}-app3'
     extends:
       file: ./docker-compose.services.yml
       service: general
-      service: ${APP_ENV}-app
-    build:
-      context: ./app             
+      service: ${APP_ENV}-app-clone
+    image: ${APP_NAME}_app            
     ports:
-      - "3003:3003"       
+      - "3002:3002"       
     environment:
-      APP_PORT: 3003
+      APP_PORT: 3002
+    depends_on:
+      app:
+        condition: service_healthy
 networks:
   main:
-      name: '${APP_NAME}-network'
-      driver: bridge 
+    name: '${APP_NAME}-network'
+    driver: bridge 

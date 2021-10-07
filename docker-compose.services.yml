@@ -3,10 +3,14 @@ services:
     build:
       target: dev
     volumes:
-        - ./app:/usr/src/app
+      - ./app:/usr/src/app
+  dev-app-clone:
+    volumes:
+      - ./app:/usr/src/app
   prod-app:
     build:
       target: prod
+  prod-app-clone:
   general:
     networks:
       - main
