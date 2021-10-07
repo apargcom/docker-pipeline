@@ -1,13 +1,13 @@
 services:
-  dev:
+  dev-app:
     build:
       target: dev
     volumes:
         - ./app:/usr/src/app
-  prod:
+  prod-app:
     build:
       target: prod
-  default:
+  general:
     networks:
       - main
     restart: 'always'    

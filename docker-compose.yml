@@ -3,7 +3,7 @@ services:
     container_name: '${APP_NAME}-server'
     extends:
       file: ./docker-compose.services.yml
-      service: default
+      service: general
     build:
        context: ./nginx   
     ports:
@@ -16,8 +16,8 @@ services:
     container_name: '${APP_NAME}-app1'
     extends:
       file: ./docker-compose.services.yml
-      service: default
-      service: ${APP_ENV}  
+      service: general
+      service: ${APP_ENV}-app  
     build:
       context: ./app           
     ports:
@@ -28,8 +28,8 @@ services:
     container_name: '${APP_NAME}-app2'
     extends:
       file: ./docker-compose.services.yml
-      service: default
-      service: ${APP_ENV}  
+      service: general
+      service: ${APP_ENV}-app
     build:
       context: ./app           
     ports:
@@ -40,8 +40,8 @@ services:
     container_name: '${APP_NAME}-app3'
     extends:
       file: ./docker-compose.services.yml
-      service: default
-      service: ${APP_ENV}
+      service: general
+      service: ${APP_ENV}-app
     build:
       context: ./app             
     ports:
