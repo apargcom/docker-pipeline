@@ -1,9 +1,17 @@
 services:
-  dev-app:
+  dev:
     build:
       target: dev
     volumes:
         - ./app:/usr/src/app
-  prod-app:
+  prod:
     build:
       target: prod
+  default:
+    networks:
+      - main
+    restart: 'always'    
+    env_file:
+      - .env
+  
+
