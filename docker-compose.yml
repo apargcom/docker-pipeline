@@ -3,59 +3,28 @@ services:
     container_name: '${APP_NAME}-server'
     extends:
       file: ./docker-compose.services.yml
-      service: general
+      service: ${APP_ENV}-server  
     build:
        context: ./nginx   
     ports:
-      - "${APP_PORT}:${APP_PORT}"   
+      - "${SERVER_PORT}:${SERVER_PORT}"   
     depends_on:
       - app
-      - app2
-      - app3
+    restart: 'always' 
+    env_file:
+      - .env
   app:
-    container_name: '${APP_NAME}-app'
     extends:
       file: ./docker-compose.services.yml
-      service: general
       service: ${APP_ENV}-app  
     build:
-      context: ./app           
-    image: ${APP_NAME}_app
-    ports:
-      - "3000:3000"       
-    environment:
-      APP_PORT: 3000
-    healthcheck:
-      test: "exit 0"
-  app2:
-    container_name: '${APP_NAME}-app2'
-    extends:
-      file: ./docker-compose.services.yml
-      service: general
-      service: ${APP_ENV}-app-clone
-    image: ${APP_NAME}_app       
-    ports:
-      - "3001:3001"       
-    environment:
-      APP_PORT: 3001
-    depends_on:
-      app:
-        condition: service_healthy
-  app3:
-    container_name: '${APP_NAME}-app3'
-    extends:
-      file: ./docker-compose.services.yml
-      service: general
-      service: ${APP_ENV}-app-clone
-    image: ${APP_NAME}_app            
-    ports:
-      - "3002:3002"       
-    environment:
-      APP_PORT: 3002
-    depends_on:
-      app:
-        condition: service_healthy
+      context: ./app   
+    expose:
+      - ${APP_PORT}
+    restart: 'always'    
+    env_file:
+      - .env
 networks:
-  main:
+  default:
     name: '${APP_NAME}-network'
     driver: bridge 

@@ -1,21 +1,22 @@
 services:
+  dev-server:
+    build:
+      target: dev
+  prod-server:
+    build:
+      target: prod
   dev-app:
     build:
       target: dev
     volumes:
       - ./app:/usr/src/app
-  dev-app-clone:
-    volumes:
-      - ./app:/usr/src/app
   prod-app:
     build:
       target: prod
-  prod-app-clone:
-  general:
-    networks:
-      - main
-    restart: 'always'    
-    env_file:
-      - .env
+    deploy:
+      mode: replicated
+      replicas: ${APP_PROD_SCALE}
+
+    
   
 
