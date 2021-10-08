@@ -1,8 +1,10 @@
-.dockerignore
 app/node_modules
 app/npm-debug.log
 app/Dockerfile
 nginx/Dockerfile
 docker-compose.*.yml
+.dockerignore
 .git
 .gitignore
+.env
+.env.example

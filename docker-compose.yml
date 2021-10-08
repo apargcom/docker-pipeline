@@ -1,9 +1,6 @@
 services:
   server:
     container_name: '${APP_NAME}-server'
-    extends:
-      file: ./docker-compose.services.yml
-      service: ${APP_ENV}-server  
     build:
        context: ./nginx   
     ports:

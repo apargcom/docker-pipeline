@@ -1,10 +1,4 @@
 services:
-  dev-server:
-    build:
-      target: dev
-  prod-server:
-    build:
-      target: prod
   dev-app:
     build:
       target: dev
