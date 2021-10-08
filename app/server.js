@@ -8,7 +8,7 @@ const PORT = process.env.APP_PORT;
 const app = express();
 app.get('/', (req, res) => {
     res.send(`
-        <h1>Hello world with port - ${PORT}!</h1>
+        <h1>Hello world!</h1>
     `);
 });
 
