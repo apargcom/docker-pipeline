@@ -1,0 +1,13 @@
+user  nginx;
+events {
+    worker_connections   1024;
+}
+http {
+    server {
+        listen ${SERVER_PORT};
+        server_name  ${SERVER_HOST};
+        location / {
+            proxy_pass http://app:${APP_PORT};
+        }
+    }
+}

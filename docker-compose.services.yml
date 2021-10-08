@@ -1,9 +1,16 @@
 services:
-  dev-server:
+  dev-app:
     build:
       target: dev
     volumes:
-        - ./:/usr/src/app
-  prod-server:
+      - ./app:/usr/src/app
+  prod-app:
     build:
       target: prod
+    deploy:
+      mode: replicated
+      replicas: ${APP_PROD_SCALE}
+
+    
+  
+

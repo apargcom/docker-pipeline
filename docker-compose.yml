@@ -1,19 +1,27 @@
 services:
   server:
+    container_name: '${APP_NAME}-server'
+    build:
+       context: ./nginx   
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"   
+    depends_on:
+      - app
+    restart: 'always' 
+    env_file:
+      - .env
+  app:
     extends:
       file: ./docker-compose.services.yml
-      service: ${APP_ENV}-server
+      service: ${APP_ENV}-app  
     build:
-      context: .     
-    container_name: '${APP_NAME}-server'
-    ports:
-      - "${APP_PORT}:${APP_PORT}"    
-    networks:
-      - main
-    restart: 'always'
+      context: ./app   
+    expose:
+      - ${APP_PORT}
+    restart: 'always'    
     env_file:
       - .env
 networks:
-  main:
-      name: '${APP_NAME}-network'
-      driver: bridge 
+  default:
+    name: '${APP_NAME}-network'
+    driver: bridge 
