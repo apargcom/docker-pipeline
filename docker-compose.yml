@@ -5,9 +5,7 @@ services:
       file: ./docker-compose.services.yml
       service: ${APP_ENV}-server  
     build:
-       context: ./nginx  
-       args: 
-        SERVER_HOST: "${SERVER_HOST}" 
+       context: ./nginx
     ports:
       - 443:443
       - 80:80   
