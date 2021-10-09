@@ -3,11 +3,17 @@ events {
     worker_connections   1024;
 }
 http {
+
+    upstream app-upstream {
+        least_conn;
+        server app:${APP_PORT} weight=1;
+    }
+
     server {
         listen ${SERVER_PORT};
         server_name  ${SERVER_HOST};
         location / {
-            proxy_pass http://app:${APP_PORT};
+            proxy_pass http://app-upstream;
         }
     }
 }
