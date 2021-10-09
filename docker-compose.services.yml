@@ -10,6 +10,12 @@ services:
     deploy:
       mode: replicated
       replicas: ${APP_PROD_SCALE}
+  dev-server:
+    build:
+      target: dev
+  prod-server:
+    build:
+      target: prod
 
     
   

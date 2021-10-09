@@ -1,10 +1,16 @@
 services:
   server:
     container_name: '${APP_NAME}-server'
+    extends:
+      file: ./docker-compose.services.yml
+      service: ${APP_ENV}-server  
     build:
-       context: ./nginx   
+       context: ./nginx  
+       args: 
+        SERVER_HOST: "${SERVER_HOST}" 
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"   
+      - 443:443
+      - 80:80   
     depends_on:
       - app
     restart: 'always' 
@@ -15,7 +21,7 @@ services:
       file: ./docker-compose.services.yml
       service: ${APP_ENV}-app  
     build:
-      context: ./app   
+      context: ./app
     expose:
       - ${APP_PORT}
     restart: 'always'    
