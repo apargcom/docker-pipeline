@@ -2,21 +2,27 @@ FROM nginx:1.20.1-alpine@sha256:2012644549052fa07c43b0d19f320c871a25e105d0b23e33
 
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 #Replace all env variables without touching nginx internal variables
-CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" \
-    </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \
+CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \
     nginx -g 'daemon off;'
 
 FROM base AS prod
-#TODO: Add lets encrypt with 90 days autorenewal for production
-RUN apk add openssl && \
-    openssl req -x509 -nodes -days 3650 \
-    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" \
-    -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
-    -out /etc/ssl/certs/nginx-selfsigned.crt;
+
+COPY --from=base /etc/nginx/nginx.conf /etc/nginx/nginx.conf
+ARG SERVER_HOST ADMIN_EMAIL
+#TODO: Test on real server - lets encrypt with 90 days autorenewal for production
+RUN apk add --no-cache certbot && \
+    echo "python3 -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew --webroot --webroot-path /var/lib/certbot/ --post-hook \"/usr/sbin/nginx -s reload\"" >> /etc/periodic/daily/renew && \
+    mkdir /var/lib/certbot
+CMD certbot certonly --standalone -d ${SERVER_HOST}.com,www.${SERVER_HOST}.com --email ${ADMIN_EMAIL} -n --agree-tos --expand && \
+    crond -f -d 8 & \
+    nginx -g 'daemon off;'
 
 FROM base AS dev
+
+COPY --from=base /etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN apk add openssl && \
     openssl req -x509 -nodes -days 3650 \
     -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" \
-    -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
-    -out /etc/ssl/certs/nginx-selfsigned.crt;
+    -newkey rsa:2048 -keyout /etc/ssl/private/privkey.pem \
+    -out /etc/ssl/certs/fullchain.pem
+
