@@ -18,7 +18,7 @@ services:
       target: prod      
       args:
         SERVER_HOST: ${SERVER_HOST}
-        SSL_EMAIL: ${ADMIN_EMAIL}
+        ADMIN_EMAIL: ${ADMIN_EMAIL}
     volumes:
       - ./nginx/letsencrypt:/ets/letsencrypt
 
