@@ -13,6 +13,8 @@ services:
   dev-server:
     build:
       target: dev
+      args:
+        SERVER_HOST: ${SERVER_HOST}
   prod-server:
     build:
       target: prod      
@@ -20,7 +22,7 @@ services:
         SERVER_HOST: ${SERVER_HOST}
         ADMIN_EMAIL: ${ADMIN_EMAIL}
     volumes:
-      - ./nginx/letsencrypt:/ets/letsencrypt
+      - ./nginx/letsencrypt:/etc/letsencrypt
 
     
   

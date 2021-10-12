@@ -5,7 +5,7 @@ COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 
 FROM base AS prod
-RUN apk add openssl && openssl req -x509 -nodes -days 3650 -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -newkey rsa:2048 -keyout /etc/ssl/private/privkey.pem -out /etc/ssl/certs/fullchain.pem
+
 ARG SERVER_HOST ADMIN_EMAIL
 #TODO: Test on real server - lets encrypt with 90 days autorenewal for production
 RUN apk add --no-cache certbot && \
@@ -20,10 +20,11 @@ CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.te
 
 FROM base AS dev
 
+ARG SERVER_HOST
 RUN apk add openssl && \
     openssl req -x509 -nodes -days 3650 \
-    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" \
-    -newkey rsa:2048 -keyout /etc/letsencrypt/live/privkey.pem \
-    -out /etc/letsencrypt/live/fullchain.pem
+    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -addext "subjectAltName=DNS:${SERVER_HOST}" \
+    -newkey rsa:2048 -keyout /etc/letsencrypt/live/${SERVER_HOST}/privkey.pem \
+    -out /etc/letsencrypt/live/${SERVER_HOST}/fullchain.pem
 CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \
     nginx -g 'daemon off;'
