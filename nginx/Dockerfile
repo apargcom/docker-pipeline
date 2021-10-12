@@ -14,7 +14,7 @@ RUN apk add --no-cache certbot && \
     mkdir /var/lib/certbot
 #TODO: Change last ';' certbot generation line to '&&' on production
 CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \    
-    certbot certonly --standalone -d ${SERVER_HOST}.com,www.${SERVER_HOST}.com --email ${ADMIN_EMAIL} -n --agree-tos --expand ; \
+    certbot certonly --standalone -d ${SERVER_HOST},www.${SERVER_HOST} --email ${ADMIN_EMAIL} -n --agree-tos --expand ; \
     crond -f -d 8 & \ 
     nginx -g 'daemon off;'
 
@@ -23,7 +23,7 @@ FROM base AS dev
 RUN apk add openssl && \
     openssl req -x509 -nodes -days 3650 \
     -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" \
-    -newkey rsa:2048 -keyout /etc/ssl/private/privkey.pem \
-    -out /etc/ssl/certs/fullchain.pem
+    -newkey rsa:2048 -keyout /etc/letsencrypt/live/privkey.pem \
+    -out /etc/letsencrypt/live/fullchain.pem
 CMD envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \
     nginx -g 'daemon off;'
