@@ -1,15 +1,5 @@
 #!/bin/sh
 
-while true; do
-  case "$1" in
-    -s | --ssl ) SSL="$2"; shift 2 ;;
-    -h | --host ) SERVER_HOST="$2"; shift 2 ;;
-    -t | --type ) TYPE="$2"; shift 2 ;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
 function openssl_build(){
 
     apk add openssl
@@ -22,41 +12,47 @@ function openssl_start(){
     -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -addext "subjectAltName=DNS:${SERVER_HOST}" \
     -newkey rsa:2048 -keyout /etc/letsencrypt/live/${SERVER_HOST}/privkey.pem \
     -out /etc/letsencrypt/live/${SERVER_HOST}/fullchain.pem && \
-    chmod +rw /etc/letsencrypt/live/${SERVER_HOST}/fullchain.pem && \
-    chmod +rw /etc/letsencrypt/live/${SERVER_HOST}/privkey.pem
+    chmod -R +rw /etc/letsencrypt/live/${SERVER_HOST}
 }
 
 function certbot_build(){
     
     apk add --no-cache certbot && \
-    echo -e "#!/bin/sh\npython3 -c 'import random; import time; time.sleep(random.random() * 3600)' &&  certbot renew --webroot --webroot-path /var/lib/certbot/ --post-hook '/usr/sbin/nginx -s reload'" >> /etc/periodic/daily/renew_ssl && \
+    echo -e "#!/bin/sh\npython3 -c 'import random; import time; time.sleep(random.random() * 3600)' && \\
+        certbot renew --webroot --webroot-path /var/lib/certbot/ --post-hook '/usr/sbin/nginx -s reload'" >> /etc/periodic/daily/renew_ssl && \
     chmod +x /etc/periodic/daily/renew_ssl && \
     mkdir /var/lib/certbot
 }
 
 function certbot_start(){
-    
-    envsubst "$(printf '${%s} ' $(env|cut -d'=' -f1))" </etc/nginx/nginx.conf.template> /etc/nginx/nginx.conf && \    
+
     certbot certonly --standalone -d ${SERVER_HOST},www.${SERVER_HOST} --email ${ADMIN_EMAIL} -n --agree-tos --expand && \
-    crond -f -d 8 & \ 
-    nginx -g 'daemon off;'
+    crond -f -d 8 &
 }
 
-if [ "$SSL" == "certbot" ]
+while true; do
+  case "$1" in
+    -t | --type ) STAGE_TYPE="$2"; shift 2 ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+if [ "${SSL_TYPE}" == "certbot" ]
 then
-	if [ "$TYPE" == "build" ]
+	if [ "${STAGE_TYPE}" == "build" ]
     then
         certbot_build
-    elif [ "$TYPE" == "start" ]
+    elif [ "${STAGE_TYPE}" == "start" ]
     then
         certbot_start
     fi
-elif [ "$SSL" == "openssl" ]
+elif [ "${SSL_TYPE}" == "openssl" ]
 then
-    if [ "$TYPE" == "build" ]
+    if [ "${STAGE_TYPE}" == "build" ]
     then
         openssl_build
-    elif [ "$TYPE" == "start" ]
+    elif [ "${STAGE_TYPE}" == "start" ]
     then
         openssl_start
     fi

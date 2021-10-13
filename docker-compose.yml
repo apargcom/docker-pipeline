@@ -5,7 +5,6 @@ services:
       context: ./nginx
       args:
         SERVER_HOST: ${SERVER_HOST}
-        ADMIN_EMAIL: ${ADMIN_EMAIL}
         SSL_TYPE: ${SSL_TYPE}
     volumes:
       - ./nginx/ssl:/etc/letsencrypt
