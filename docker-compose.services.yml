@@ -10,20 +10,4 @@ services:
     deploy:
       mode: replicated
       replicas: ${APP_PROD_SCALE}
-  dev-server:
-    build:
-      target: dev
-      args:
-        SERVER_HOST: ${SERVER_HOST}
-  prod-server:
-    build:
-      target: prod      
-      args:
-        SERVER_HOST: ${SERVER_HOST}
-        ADMIN_EMAIL: ${ADMIN_EMAIL}
-    volumes:
-      - ./nginx/letsencrypt:/etc/letsencrypt
-
-    
-  
 

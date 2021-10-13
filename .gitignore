@@ -1,3 +1,4 @@
 app/node_modules
+nginx/ssl
 npm-debug.log
 .env

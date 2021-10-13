@@ -1,11 +1,14 @@
 services:
   server:
-    container_name: '${APP_NAME}-server'
-    extends:
-      file: ./docker-compose.services.yml
-      service: ${APP_ENV}-server  
+    container_name: '${APP_NAME}-server' 
     build:
       context: ./nginx
+      args:
+        SERVER_HOST: ${SERVER_HOST}
+        ADMIN_EMAIL: ${ADMIN_EMAIL}
+        SSL_TYPE: ${SSL_TYPE}
+    volumes:
+      - ./nginx/ssl:/etc/letsencrypt
     ports:
       - 443:443
       - 80:80   
