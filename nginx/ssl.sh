@@ -7,12 +7,11 @@ function openssl_build(){
 
 function openssl_start(){
     
-    mkdir -p /etc/letsencrypt/live/${SERVER_HOST} && \    
+    mkdir -p /etc/letsencrypt/live/$HOST && \    
     openssl req -x509 -nodes -days 3650 \
-    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -addext "subjectAltName=DNS:${SERVER_HOST}" \
-    -newkey rsa:2048 -keyout /etc/letsencrypt/live/${SERVER_HOST}/privkey.pem \
-    -out /etc/letsencrypt/live/${SERVER_HOST}/fullchain.pem && \
-    chmod -R +rw /etc/letsencrypt/live/${SERVER_HOST}
+    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -addext "subjectAltName=DNS:$HOST" \
+    -newkey rsa:2048 -keyout /etc/letsencrypt/live/$HOST/privkey.pem \
+    -out /etc/letsencrypt/live/$HOST/fullchain.pem
 }
 
 function certbot_build(){
@@ -26,33 +25,36 @@ function certbot_build(){
 
 function certbot_start(){
 
-    certbot certonly --standalone -d ${SERVER_HOST},www.${SERVER_HOST} --email ${ADMIN_EMAIL} -n --agree-tos --expand && \
+    certbot certonly --standalone -d $HOST,www.$HOST --email $EMAIL -n --agree-tos --expand && \
     crond -f -d 8 &
 }
 
 while true; do
   case "$1" in
-    -t | --type ) STAGE_TYPE="$2"; shift 2 ;;
+    -s | --ssl ) SSL="$2"; shift 2 ;;
+    -h | --host ) HOST="$2"; shift 2 ;;
+    -t | --type ) TYPE="$2"; shift 2 ;;
+    -e | --email ) EMAIL="$2"; shift 2 ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
 
-if [ "${SSL_TYPE}" == "certbot" ]
+if [ "$SSL" == "certbot" ]
 then
-	if [ "${STAGE_TYPE}" == "build" ]
+	if [ "$TYPE" == "build" ]
     then
         certbot_build
-    elif [ "${STAGE_TYPE}" == "start" ]
+    elif [ "$TYPE" == "start" ]
     then
         certbot_start
     fi
-elif [ "${SSL_TYPE}" == "openssl" ]
+elif [ "$SSL" == "openssl" ]
 then
-    if [ "${STAGE_TYPE}" == "build" ]
+    if [ "$TYPE" == "build" ]
     then
         openssl_build
-    elif [ "${STAGE_TYPE}" == "start" ]
+    elif [ "$TYPE" == "start" ]
     then
         openssl_start
     fi

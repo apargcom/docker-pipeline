@@ -7,7 +7,7 @@ services:
         SERVER_HOST: ${SERVER_HOST}
         SSL_TYPE: ${SSL_TYPE}
     volumes:
-      - ./nginx/ssl:/etc/letsencrypt
+      - ssl:/etc/letsencrypt
     ports:
       - 443:443
       - 80:80   
@@ -27,6 +27,9 @@ services:
     restart: 'always'    
     env_file:
       - .env
+volumes:
+  ssl:
+    name: ${APP_NAME}-ssl
 networks:
   default:
     name: '${APP_NAME}-network'
