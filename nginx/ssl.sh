@@ -7,9 +7,9 @@ function openssl_build(){
 
 function openssl_start(){
     
-    mkdir -p /etc/letsencrypt/live/$HOST && \    
+    mkdir -p /etc/letsencrypt/live/$HOST && \
     openssl req -x509 -nodes -days 3650 \
-    -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=selfsigned" -addext "subjectAltName=DNS:$HOST" \
+    -subj "/C=AM/ST=Yerevan/L=Armenia/O=Selfsigned/CN=$HOST" -addext "subjectAltName=DNS:$HOST" \
     -newkey rsa:2048 -keyout /etc/letsencrypt/live/$HOST/privkey.pem \
     -out /etc/letsencrypt/live/$HOST/fullchain.pem
 }
