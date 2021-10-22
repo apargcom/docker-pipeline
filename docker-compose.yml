@@ -6,6 +6,7 @@ services:
       args:
         SERVER_HOST: ${SERVER_HOST}
         SSL_TYPE: ${SSL_TYPE}
+    image: ${CONTAINER_REPO}/${APP_NAME}-server
     volumes:
       - ssl:/etc/letsencrypt
     ports:
@@ -13,7 +14,10 @@ services:
       - 80:80   
     depends_on:
       - app
-    restart: 'always' 
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
     env_file:
       - .env
   app:
@@ -22,9 +26,13 @@ services:
       service: ${APP_ENV}-app  
     build:
       context: ./app
-    expose:
+    image: ${CONTAINER_REPO}/${APP_NAME}-app
+    ports:
       - ${APP_PORT}
-    restart: 'always'    
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
     env_file:
       - .env
 volumes:
