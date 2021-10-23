@@ -7,7 +7,7 @@ function openssl_build(){
 
 function openssl_start(){
     
-    mkdir -p /etc/letsencrypt/live/$HOST && \
+    mkdir -p /etc/letsencrypt/live/$HOST
     openssl req -x509 -nodes -days 3650 \
     -subj "/C=AM/ST=Yerevan/L=Armenia/O=Selfsigned/CN=$HOST" -addext "subjectAltName=DNS:$HOST" \
     -newkey rsa:2048 -keyout /etc/letsencrypt/live/$HOST/privkey.pem \
@@ -16,16 +16,16 @@ function openssl_start(){
 
 function certbot_build(){
     
-    apk add --no-cache certbot && \
+    apk add --no-cache certbot
     echo -e "#!/bin/sh\npython3 -c 'import random; import time; time.sleep(random.random() * 3600)' && \\
-        certbot renew --webroot --webroot-path /var/lib/certbot/ --post-hook '/usr/sbin/nginx -s reload'" >> /etc/periodic/daily/renew_ssl && \
-    chmod +x /etc/periodic/daily/renew_ssl && \
+        certbot renew --webroot --webroot-path /var/lib/certbot/ --post-hook \"/usr/sbin/nginx -s reload\"" >> /etc/periodic/daily/renew_ssl && \
+    chmod +x /etc/periodic/daily/renew_ssl
     mkdir /var/lib/certbot
 }
 
 function certbot_start(){
 
-    certbot certonly --standalone -d $HOST,www.$HOST --email $EMAIL -n --agree-tos --expand && \
+    certbot certonly --standalone -d $HOST,www.$HOST --email $EMAIL -n --agree-tos --expand
     crond -f -d 8 &
 }
 

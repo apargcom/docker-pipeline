@@ -1,3 +1,56 @@
+# Deploy to AWS via docker compose CLI
+
+### Login to docker CLI
+```
+$ docker login
+```
+### Build and push images to docker hub
+```
+$ docker compose build
+$ docker compose push
+```
+### Configure AWS CLI
+```
+$ aws configure
+```
+### Create docker context and select newly created context
+```
+$ docker context create ecs my-context
+$ docker context use my-context
+```
+### Deploy everything to AWS (also for deploying an update)
+```
+$ docker compose up
+```
+### Custom domain
+To attach custom domain use own load balancer and add CNAME record with DNS name of load balancer to domain. Use **x-aws-loadbalancer: "myloadbalancer"** in docker-composer file to specify own load balancer.
+ ```
+ $ aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId'
+    
+ "vpc-123456"
+ $ aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-123456 --query 'Subnets[*].SubnetId'
+    
+ [
+     "subnet-1234abcd",
+     "subnet-6789ef00",
+ ]
+$ aws elbv2 create-load-balancer --name myloadbalancer --type application --subnets "subnet-1234abcd" "subnet-6789ef00"
+
+ $ aws elbv2 create-load-balancer --name myloadbalancer --type application --subnets "subnet-1234abcd" "subnet-6789ef00"
+    
+ {
+     "LoadBalancers": [
+         {
+             "IpAddressType": "ipv4",
+             "VpcId": "vpc-123456",
+             "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:1234567890:loadbalancer/app/myloadbalancer/123abcd456",
+             "DNSName": "myloadbalancer-123456.us-east-1.elb.amazonaws.com",
+ <...>
+ ```
+### IAM permissions
+Permissions that must be included in policy attached to user
+
+```
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -60,3 +113,4 @@
         }
     ]
 }
+```

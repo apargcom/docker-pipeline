@@ -1,3 +1,4 @@
+x-aws-loadbalancer: '${AWS_LOADBALANCER}'
 services:
   server:
     container_name: '${APP_NAME}-server' 
