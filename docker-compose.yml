@@ -1,4 +1,4 @@
-x-aws-loadbalancer: '${AWS_LOADBALANCER}'
+x-aws-loadbalancer: '${AWS_LOADBALANCER}' # Remove to create new load balancer during deploy
 services:
   server:
     container_name: '${APP_NAME}-server' 

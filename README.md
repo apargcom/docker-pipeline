@@ -22,8 +22,8 @@ $ docker context use my-context
 ```
 $ docker compose up
 ```
-### Custom domain
-To attach custom domain use own load balancer and add CNAME record with DNS name of load balancer to domain. Use **x-aws-loadbalancer: "myloadbalancer"** in docker-composer file to specify own load balancer.
+## Custom domain
+To attach custom domain use own load balancer and add CNAME record with DNS name of load balancer to domain. Use **x-aws-loadbalancer: "myloadbalancer"** in docker-composer file to specify own load balancer. 
  ```
  $ aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId'
     
@@ -34,9 +34,7 @@ To attach custom domain use own load balancer and add CNAME record with DNS name
      "subnet-1234abcd",
      "subnet-6789ef00",
  ]
-$ aws elbv2 create-load-balancer --name myloadbalancer --type application --subnets "subnet-1234abcd" "subnet-6789ef00"
-
- $ aws elbv2 create-load-balancer --name myloadbalancer --type application --subnets "subnet-1234abcd" "subnet-6789ef00"
+ $ aws elbv2 create-load-balancer --name myloadbalancer --type network --subnets "subnet-1234abcd" "subnet-6789ef00"
     
  {
      "LoadBalancers": [
@@ -47,8 +45,12 @@ $ aws elbv2 create-load-balancer --name myloadbalancer --type application --subn
              "DNSName": "myloadbalancer-123456.us-east-1.elb.amazonaws.com",
  <...>
  ```
-### IAM permissions
-Permissions that must be included in policy attached to user
+ You can also use bash script to create own load balancer.
+ ```
+ $ bash aws.sh --action lb --lbname myloadbalancer
+ ```
+## IAM permissions
+Permissions that must be included in policy attached to AWS user.
 
 ```
 {
