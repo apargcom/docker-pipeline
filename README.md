@@ -1,17 +1,17 @@
 # Deploy to AWS via docker compose CLI
-
-### Login to docker CLI
+### Configure AWS CLI
 ```
-$ docker login
+$ aws configure
+```
+### Login to ECR
+As alternative you can also use docker hub. Use **$ docker login** to login.
+```
+$ aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
 ```
 ### Build and push images to docker hub
 ```
 $ docker compose build
 $ docker compose push
-```
-### Configure AWS CLI
-```
-$ aws configure
 ```
 ### Create docker context and select newly created context
 ```
@@ -60,6 +60,18 @@ Permissions that must be included in policy attached to AWS user.
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetRepositoryPolicy",
+                "ecr:ListImages",
+                "ecr:BatchGetImage",
+                "ecr:DescribeImages",
+                "ecr:DescribeRepositories",
+                "ecr:PutImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:CompleteLayerUpload",
+                "ecr:InitiateLayerUpload",
+                "ecr:GetAuthorizationToken",
+                "ecr:UploadLayerPart",
                 "iam:PutRolePolicy",
                 "elasticfilesystem:*",
                 "iam:CreateInstanceProfile",
