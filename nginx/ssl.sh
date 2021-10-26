@@ -25,7 +25,7 @@ function certbot_build(){
 
 function certbot_start(){
 
-    certbot certonly --standalone -d $HOST,www.$HOST --email $EMAIL -n --agree-tos --expand
+    certbot certonly -n -d $HOST,www.$HOST --standalone --preferred-challenges http --email $EMAIL --agree-tos --expand
     crond -f -d 8 &
 }
 
