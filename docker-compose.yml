@@ -1,15 +1,9 @@
-x-aws-loadbalancer: '${AWS_LOADBALANCER}' # Remove to create new load balancer during deploy
 services:
   server:
     container_name: '${APP_NAME}-server' 
     build:
       context: ./nginx
-      args:
-        SERVER_HOST: ${SERVER_HOST}
-        SSL_TYPE: ${SSL_TYPE}
     image: ${CONTAINER_REPO}/${APP_NAME}-server
-    volumes:
-      - ssl:/etc/letsencrypt
     ports:
       - 443:443
       - 80:80   
@@ -36,9 +30,6 @@ services:
         condition: on-failure
     env_file:
       - .env
-volumes:
-  ssl:
-    name: ${APP_NAME}-ssl
 networks:
   default:
     name: '${APP_NAME}-network'
