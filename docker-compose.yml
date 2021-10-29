@@ -2,9 +2,6 @@ version: '3.8'
 services:
   server:
     container_name: '${APP_NAME}-server' 
-    extends:
-      file: ./docker-compose.services.yml
-      service: ${APP_ENV}-server  
     image: ${CONTAINER_REPO}/${APP_NAME}-server
     ports:
       - 443:443
@@ -18,9 +15,6 @@ services:
     env_file:
       - .env
   app:
-    extends:
-      file: ./docker-compose.services.yml
-      service: ${APP_ENV}-app  
     image: ${CONTAINER_REPO}/${APP_NAME}-app
     ports:
       - 3000

@@ -1,0 +1,10 @@
+services:
+  server:
+    build:
+      context: ./nginx
+  app:
+    build:
+      target: dev
+      context: ./app
+    volumes:
+      - ./app:/usr/src/app

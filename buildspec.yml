@@ -16,7 +16,7 @@ phases:
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker-compose build
+      - docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
   post_build:
     commands:
       - echo Build completed on `date`
@@ -25,4 +25,4 @@ phases:
 artifacts:
   files:
     - 'docker-compose.yml'
-    - 'docker-compose.services.yml'
+    - 'docker-compose.override.yml'

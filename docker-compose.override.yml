@@ -1,0 +1,5 @@
+services:
+  app:
+    deploy:
+      mode: replicated
+      replicas: ${APP_PROD_SCALE}  
