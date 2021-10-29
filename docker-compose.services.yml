@@ -1,13 +1,23 @@
 services:
+  prod-server:
+    deploy:
+  prod-app:
+    deploy:
+      mode: replicated
+      replicas: ${APP_PROD_SCALE}  
+  dev-server:
+    build:
+      context: ./nginx
   dev-app:
     build:
       target: dev
+      context: ./app
     volumes:
       - ./app:/usr/src/app
-  prod-app:
+  build-server:
+    build:
+      context: ./nginx
+  build-app:
     build:
       target: prod
-    deploy:
-      mode: replicated
-      replicas: ${APP_PROD_SCALE}
-
+      context: ./app

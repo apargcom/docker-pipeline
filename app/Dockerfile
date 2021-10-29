@@ -1,5 +1,6 @@
 FROM node:14.18.0-alpine@sha256:fe676cd79c27a562f8be7b0c57255b0457ac66d5c32d9ab88a9e836d92a6f6ea AS base
 
+EXPOSE 3000
 WORKDIR /usr/src/app
 
 FROM base AS prod

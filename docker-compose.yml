@@ -1,8 +1,9 @@
 services:
   server:
     container_name: '${APP_NAME}-server' 
-    build:
-      context: ./nginx
+    extends:
+      file: ./docker-compose.services.yml
+      service: ${APP_ENV}-server  
     image: ${CONTAINER_REPO}/${APP_NAME}-server
     ports:
       - 443:443
@@ -19,11 +20,9 @@ services:
     extends:
       file: ./docker-compose.services.yml
       service: ${APP_ENV}-app  
-    build:
-      context: ./app
     image: ${CONTAINER_REPO}/${APP_NAME}-app
     ports:
-      - ${APP_PORT}
+      - 3000
     restart: on-failure
     deploy:
       restart_policy:
