@@ -3,9 +3,13 @@ services:
   server:
     build:
       context: ./nginx
+    env_file:
+      - .env
   app:
     build:
       target: dev
       context: ./app
     volumes:
       - ./app:/usr/src/app
+    env_file:
+      - .env

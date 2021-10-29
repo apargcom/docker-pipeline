@@ -12,8 +12,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-    env_file:
-      - .env
   app:
     image: ${CONTAINER_REPO}/${APP_NAME}-app
     ports:
@@ -22,8 +20,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-    env_file:
-      - .env
 networks:
   default:
     name: '${APP_NAME}-network'
