@@ -2,17 +2,15 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
       - docker login -u arspyus -p $DOCKER_ACCESS
       #- aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - mv docker-compose.prod.yml docker-compose.override.yml
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker-compose -f docker-compose.yml -f docker-compose.build-prod.yml build
+      - docker-compose -f docker-compose.yml -f docker-compose.build.yml build
   post_build:
     commands:
-      - docker-compose -f docker-compose.yml -f docker-compose.build-prod.yml push
+      - docker-compose -f docker-compose.yml -f docker-compose.build.yml push
 artifacts:
   files:
     - 'docker-compose.yml'

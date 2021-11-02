@@ -1,6 +1,15 @@
 version: '3.8'
 services:
+  server:
+    build:
+      context: ./nginx
+    env_file:
+      - .env
   app:
-    deploy:
-      mode: replicated
-      replicas: ${APP_PROD_SCALE}  
+    build:
+      target: dev
+      context: ./app
+    volumes:
+      - ./app:/usr/src/app
+    env_file:
+      - .env
