@@ -1,7 +1,7 @@
 FROM nginx:1.20.1-alpine@sha256:2012644549052fa07c43b0d19f320c871a25e105d0b23e33645e4f1bcf8fcd97
 
 EXPOSE 80 443
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
+COPY nginx.conf /etc/nginx/nginx.conf.template
 RUN apk add openssl && \
     openssl req -x509 -nodes -days 3650 \
     -subj "/C=AM/ST=Yerevan/L=Armenia/O=selfsigned/CN=localhost" -addext "subjectAltName=DNS:localhost" \
