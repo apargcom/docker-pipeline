@@ -8,7 +8,7 @@
     2. Create a name for your application and environment
     3. For the platform make sure you select 'Docker', and for Platform branch select 'Docker running on 64bit Amazon Linux 2'
     4. Leave 'Sample application' for application code
-    5. Click on 'Configure more options', than edit 'Software' and add all environment properties including DOCKER_ACCESS in case of docker hub or AWS_ACCOUNT_ID and AWS_DEFAULT_REGION in case of ECR
+    5. Click on 'Configure more options', than edit 'Software' and add all environment properties
 ### Create new CodeBuild
     1. Click on 'Create build project'.
     2. Select GitHub for source provider, click on connect github than 'Repository in my GitHub account' and write you repo URL
@@ -22,7 +22,7 @@
         - Privileged (Enable this flag if you want to build Docker images or want your builds to get elevated privileges) — Yes (Checked box)
         - Service role — New service role
         - Build specifications — Use a buildspec file
-        - In 'Additional configuration' of 'Environment' block add all environment properties including DOCKER_ACCESS in case of docker hub or AWS_ACCOUNT_ID and AWS_DEFAULT_REGION in case of ECR
+        - In 'Additional configuration' of 'Environment' block add all environment properties including DOCKER_USERNAME and DOCKER_ACCESS in case of docker hub or AWS_ACCOUNT_ID and AWS_DEFAULT_REGION in case of ECR
 ### Add IAM policies for ECR   
     1. Attach 'AmazonEC2ContainerRegistryReadOnly' policty to 'aws-elasticbeanstalk-ec2-role' role
     1. Attach 'AmazonEC2ContainerRegistryPowerUser' policty to newly created 'codebuild-CodeBuildProjectName-service-role' CodeBuild role
