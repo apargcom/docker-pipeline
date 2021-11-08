@@ -11,7 +11,7 @@
     5. Click on 'Configure more options', than edit 'Software' and add all environment properties
 ### Create new CodeBuild
     1. Click on 'Create build project'.
-    2. Select GitHub for source provider, click on connect github than 'Repository in my GitHub account' and write you repo URL
+    2. Select GitHub for source provider, click on connect github than 'Repository in my GitHub account' and write you repo URL and branch
     3. Other configurations:
         - Environment Image — Managed Image
         - Operating System — Ubuntu
