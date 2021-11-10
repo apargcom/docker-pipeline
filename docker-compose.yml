@@ -2,7 +2,7 @@ version: '3.8'
 services:
   server:
     container_name: '${APP_NAME}-server' 
-    image: ${CONTAINER_REPO}/${APP_NAME}-server
+    image: ${CONTAINER_REPO}/${APP_NAME}-server:latest
     ports:
       - 443:443
       - 80:80   
@@ -13,7 +13,7 @@ services:
       restart_policy:
         condition: on-failure
   app:
-    image: ${CONTAINER_REPO}/${APP_NAME}-app
+    image: ${CONTAINER_REPO}/${APP_NAME}-app:latest
     ports:
       - 3000
     restart: on-failure
