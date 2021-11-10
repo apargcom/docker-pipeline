@@ -33,3 +33,5 @@
     4. For deploy step select 'AWS Elastic Beanstalk' and select you application and environment
 ### Attach custom domain (if needed)
     1. To attach custom domain add CNAME record with DNS name of EB application or load balancer (if exist).
+    2. Create new public certificate at ACM and validate by adding CNAME to domain.
+    3. Open 443 port in load balancer of EB application configurations and attach cetificate.
