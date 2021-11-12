@@ -7,8 +7,8 @@
     1. Click on 'Create a new environment', and select 'Web server environment'
     2. Create a name for your application and environment
     3. For the platform make sure you select 'Docker', and for Platform branch select 'Docker running on 64bit Amazon Linux 2'
-    4. Leave 'Sample application' for application code
-    5. Click on 'Configure more options', than edit 'Software' and add all environment properties
+    4. Create 'Sample application'
+    5. After creating the app go to 'Configuration', than edit 'Software' and add all environment properties
 ### Create new CodeBuild
     1. Click on 'Create build project'.
     2. Select GitHub for source provider, click on connect github than 'Repository in my GitHub account' and write you repo URL and branch
