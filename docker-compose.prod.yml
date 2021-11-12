@@ -1,6 +1,20 @@
 version: '3.8'
 services:
+  server:
+    image: ${CONTAINER_REPO}/${APP_NAME}-server:latest 
+    ports:
+      - 80:80 
+    depends_on:
+      - app
+    restart: always
   app:
-    deploy:
-      mode: replicated
-      replicas: ${APP_PROD_SCALE}  
+    image: ${CONTAINER_REPO}/${APP_NAME}-app:latest
+    ports:
+      - 3000
+    volumes:
+      - ./app:/usr/src/app
+    restart: on-failure
+networks:
+  default:
+    name: '${APP_NAME}-network'
+    driver: bridge 

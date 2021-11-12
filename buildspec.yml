@@ -4,14 +4,14 @@ phases:
     commands:
       #- docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-      - mv docker-compose.prod.yml docker-compose.override.yml
+      - mv docker-compose.prod.yml docker-compose.yml
   build:
     commands:
-      - docker-compose -f docker-compose.yml -f docker-compose.build.yml build
+      - docker build --tag $CONTAINER_REPO/$APP_NAME-server:latest --target prod ./nginx
+      - docker build --tag $CONTAINER_REPO/$APP_NAME-app:latest --target prod ./app
   post_build:
-    commands:
-      - docker-compose -f docker-compose.yml -f docker-compose.build.yml push
+      - docker push $CONTAINER_REPO/$APP_NAME-server:latest
+      - docker push $CONTAINER_REPO/$APP_NAME-app:latest
 artifacts:
   files:
     - 'docker-compose.yml'
-    - 'docker-compose.override.yml'
