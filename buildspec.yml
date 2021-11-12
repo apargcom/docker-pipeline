@@ -10,6 +10,7 @@ phases:
       - docker build --tag $CONTAINER_REPO/$APP_NAME-server:latest --target prod ./nginx
       - docker build --tag $CONTAINER_REPO/$APP_NAME-app:latest --target prod ./app
   post_build:
+    commands:
       - docker push $CONTAINER_REPO/$APP_NAME-server:latest
       - docker push $CONTAINER_REPO/$APP_NAME-app:latest
 artifacts:
