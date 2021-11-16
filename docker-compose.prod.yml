@@ -6,7 +6,9 @@ services:
       - 80:80 
     depends_on:
       - app
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
   app:
     image: ${DOCKER_REPO}/${APP_NAME}-app:latest
     ports:
@@ -14,7 +16,8 @@ services:
     deploy:
       mode: replicated
       replicas: ${APP_SCALE}  
-    restart: on-failure
+      restart_policy:
+        condition: on-failure      
 networks:
   default:
     name: '${APP_NAME}-network'
