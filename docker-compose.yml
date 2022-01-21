@@ -20,6 +20,9 @@ services:
       - 3000
     volumes:
       - ./app:/usr/src/app
+    deploy:
+      mode: replicated
+      replicas: ${APP_SCALE}  
     restart: on-failure
     env_file:
       - .env
